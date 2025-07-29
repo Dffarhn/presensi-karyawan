@@ -163,11 +163,11 @@ const ManagementDashboard = () => {
         {/* Bagian Grafik */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Grafik Pie */}
-          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow border border-gray-100 flex flex-col items-center justify-center">
+          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow border border-gray-100 flex flex-col items-center justify-end">
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 text-center">
               Komposisi Kehadiran Hari Ini
             </h3>
-            <div className="w-full flex-1 min-h-[200px] sm:min-h-[180px] lg:min-h-[220px]">
+            <div className="w-full flex-1 min-h-[200px] sm:min-h-[180px] lg:min-h-[220px] flex items-end">
               <ResponsiveContainer width="100%" height={200} className="sm:h-[180px] lg:h-[220px]">
                 <PieChart>
                   <Pie
@@ -253,10 +253,10 @@ const ManagementDashboard = () => {
             return (
               <div
                 key={index}
-                className="bg-white p-5 rounded-2xl shadow flex items-center gap-4 border border-gray-100"
+                className="bg-white p-5 rounded-2xl shadow flex items-end gap-4 border border-gray-100 min-h-[120px]"
               >
                 <div className={`p-3 rounded-lg bg-${stat.color}-100`}>
-                  <Icon className={`w-7 h-7 text-${stat.color}-600`} />
+                  <Icon className={`w-9 h-9 text-${stat.color}-600`} />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">
@@ -266,7 +266,7 @@ const ManagementDashboard = () => {
                     {stat.value}
                   </p>
                   <p
-                    className={`text-2xl font-bold ${
+                    className={`text-xl font-bold ${
                       stat.change.startsWith("+")
                         ? "text-green-600"
                         : "text-red-600"
