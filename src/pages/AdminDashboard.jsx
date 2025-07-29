@@ -16,6 +16,9 @@ import {
   Mail,
   Phone,
   X,
+  AlertTriangle,
+  UserCheck,
+  TrendingUp,
 } from "lucide-react";
 import {
   BarChart,
@@ -90,7 +93,7 @@ const AdminDashboard = () => {
     {
       id: 1,
       employee: "John Doe",
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       checkIn: "08:30",
       checkOut: "17:30",
       status: "hadir",
@@ -98,7 +101,7 @@ const AdminDashboard = () => {
     {
       id: 2,
       employee: "Sarah Smith",
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       checkIn: "08:45",
       checkOut: "17:15",
       status: "telat",
@@ -106,7 +109,7 @@ const AdminDashboard = () => {
     {
       id: 3,
       employee: "Mike Johnson",
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       checkIn: "09:15",
       checkOut: "17:00",
       status: "telat",
@@ -114,7 +117,7 @@ const AdminDashboard = () => {
     {
       id: 4,
       employee: "Lisa Wang",
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       checkIn: "08:00",
       checkOut: "17:45",
       status: "tidak masuk",
@@ -122,7 +125,7 @@ const AdminDashboard = () => {
     {
       id: 5,
       employee: "David Kim",
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       checkIn: "08:30",
       checkOut: "17:30",
       status: "hadir",
@@ -131,7 +134,9 @@ const AdminDashboard = () => {
     {
       id: 6,
       employee: "John Doe",
-      date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      date: new Date(Date.now() - 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       checkIn: "08:25",
       checkOut: "17:35",
       status: "hadir",
@@ -139,7 +144,9 @@ const AdminDashboard = () => {
     {
       id: 7,
       employee: "Sarah Smith",
-      date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      date: new Date(Date.now() - 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
       checkIn: "08:30",
       checkOut: "17:30",
       status: "hadir",
@@ -165,26 +172,45 @@ const AdminDashboard = () => {
 
   const stats = [
     {
-      title: "Total Karyawan",
-      value: employees.length.toString(),
-      icon: Users,
-      color: "blue",
-    },
-    {
-      title: "Karyawan Aktif",
-      value: employees
-        .filter((emp) => emp.status === "aktif")
-        .length.toString(),
-      icon: CheckCircle,
-      color: "green",
-    },
-    {
       title: "Kehadiran Hari Ini",
       value: "89%",
-      icon: Calendar,
-      color: "purple",
+      icon: UserCheck,
+      color: "emerald",
+      bgGradient: "from-emerald-500 to-emerald-600",
+      iconBg: "bg-emerald-100",
+      iconColor: "text-emerald-600",
+      valueColor: "text-emerald-600",
     },
-    { title: "Total Departemen", value: "8", icon: Building2, color: "indigo" },
+    {
+      title: "Karyawan Telat Hari Ini",
+      value: "20%",
+      icon: AlertTriangle,
+      color: "amber",
+      bgGradient: "from-amber-500 to-amber-600",
+      iconBg: "bg-amber-100",
+      iconColor: "text-amber-600",
+      valueColor: "text-amber-600",
+    },
+    {
+      title: "Karyawan Izin / Sakit Hari Ini",
+      value: "3 Orang",
+      icon: Clock,
+      color: "rose",
+      bgGradient: "from-rose-500 to-rose-600",
+      iconBg: "bg-rose-100",
+      iconColor: "text-rose-600",
+      valueColor: "text-rose-600",
+    },
+    {
+      title: "Tingkat Kehadiran Minggu Ini",
+      value: "89%",
+      icon: TrendingUp,
+      color: "blue",
+      bgGradient: "from-blue-500 to-blue-600",
+      iconBg: "bg-blue-100",
+      iconColor: "text-blue-600",
+      valueColor: "text-blue-600",
+    },
   ];
 
   // Chart data - Weekly attendance trend
@@ -199,12 +225,15 @@ const AdminDashboard = () => {
   ];
 
   const departmentData = [
-    { department: "IT", count: 45, color: "#3B82F6" },
-    { department: "HR", count: 25, color: "#8B5CF6" },
-    { department: "Sales", count: 35, color: "#06B6D4" },
-    { department: "Finance", count: 28, color: "#84CC16" },
-    { department: "Marketing", count: 23, color: "#F97316" },
+    { department: "IT", count: 45, color: "#3B82F6", percentage: 29, trend: "+5%", icon: "💻" },
+    { department: "HR", count: 25, color: "#8B5CF6", percentage: 16, trend: "+2%", icon: "📋" },
+    { department: "Sales", count: 35, color: "#06B6D4", percentage: 22, trend: "+8%", icon: "📈" },
+    { department: "Finance", count: 28, color: "#84CC16", percentage: 18, trend: "+3%", icon: "💰" },
+    { department: "Marketing", count: 23, color: "#F97316", percentage: 15, trend: "+1%", icon: "🎯" },
   ];
+
+  // State untuk memilih jenis visualisasi
+  const [visualizationType, setVisualizationType] = useState("bar"); // pie, bar, donut, progress, cards
 
   const filteredEmployees = employees.filter(
     (emp) =>
@@ -234,6 +263,14 @@ const AdminDashboard = () => {
     name: "",
     date: "",
     type: "Libur Nasional",
+  });
+
+  // Quick attendance form state
+  const [quickAttendanceForm, setQuickAttendanceForm] = useState({
+    employee: "",
+    checkIn: "",
+    checkOut: "",
+    status: "hadir",
   });
 
   // Custom tooltip for attendance trend chart
@@ -269,6 +306,174 @@ const AdminDashboard = () => {
     }
     return null;
   };
+
+  // Komponen visualisasi alternatif
+  const PieChartVisualization = () => (
+    <ResponsiveContainer width="100%" height={200} className="sm:h-[250px]">
+      <PieChart>
+        <Pie
+          data={departmentData}
+          cx="50%"
+          cy="50%"
+          innerRadius={30}
+          outerRadius={60}
+          paddingAngle={3}
+          dataKey="count"
+          stroke="#FFFFFF"
+          strokeWidth={2}
+        >
+          {departmentData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+        <Tooltip content={<CustomDepartmentTooltip />} />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+
+  const DonutChartVisualization = () => (
+    <ResponsiveContainer width="100%" height={200} className="sm:h-[250px]">
+      <PieChart>
+        <Pie
+          data={departmentData}
+          cx="50%"
+          cy="50%"
+          innerRadius={50}
+          outerRadius={80}
+          paddingAngle={5}
+          dataKey="count"
+          stroke="#FFFFFF"
+          strokeWidth={3}
+        >
+          {departmentData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+        <Tooltip content={<CustomDepartmentTooltip />} />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+
+  const BarChartVisualization = () => (
+    <ResponsiveContainer width="100%" height={200} className="sm:h-[250px]">
+      <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+        <XAxis 
+          dataKey="department" 
+          tick={{ fontSize: 10, fill: "#6B7280" }}
+          axisLine={{ stroke: "#E5E7EB" }}
+          tickLine={{ stroke: "#E5E7EB" }}
+        />
+        <YAxis 
+          tick={{ fontSize: 10, fill: "#6B7280" }}
+          axisLine={{ stroke: "#E5E7EB" }}
+          tickLine={{ stroke: "#E5E7EB" }}
+        />
+        <Tooltip content={<CustomDepartmentTooltip />} />
+        <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+          {departmentData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
+
+  const ProgressBarsVisualization = () => (
+    <div className="space-y-4">
+      {departmentData.map((item, index) => (
+        <div key={index} className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-sm font-medium text-gray-900">{item.department}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm font-bold text-gray-900">{item.count}</span>
+              <span className="text-xs text-green-600 font-medium">{item.trend}</span>
+            </div>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div
+              className="h-3 rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${item.percentage}%`,
+                backgroundColor: item.color,
+              }}
+            ></div>
+          </div>
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>{item.percentage}% dari total</span>
+            <span>{item.count} karyawan</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const CardsVisualization = () => (
+    <div className="grid grid-cols-1 gap-3">
+      {departmentData.map((item, index) => (
+        <div
+          key={index}
+          className="relative overflow-hidden bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-all duration-300"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div
+                className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+                style={{ backgroundColor: `${item.color}20` }}
+              >
+                {item.icon}
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">{item.department}</h4>
+                <p className="text-sm text-gray-600">{item.count} karyawan</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-gray-900">{item.count}</div>
+              <div className="text-xs text-green-600 font-medium">{item.trend}</div>
+            </div>
+          </div>
+          <div
+            className="absolute bottom-0 left-0 h-1 transition-all duration-500 ease-out"
+            style={{
+              width: `${item.percentage}%`,
+              backgroundColor: item.color,
+            }}
+          ></div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const HorizontalBarVisualization = () => (
+    <div className="space-y-4">
+      {departmentData.map((item, index) => (
+        <div key={index} className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-sm font-medium text-gray-900 min-w-[80px]">{item.department}</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-20 bg-gray-200 rounded-full h-2">
+                <div
+                  className="h-2 rounded-full transition-all duration-500 ease-out"
+                  style={{
+                    width: `${item.percentage}%`,
+                    backgroundColor: item.color,
+                  }}
+                ></div>
+              </div>
+              <span className="text-sm font-bold text-gray-900 min-w-[30px]">{item.count}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
   // Modal handlers
   const openEmployeeModal = (type, item = null) => {
@@ -372,6 +577,35 @@ const AdminDashboard = () => {
       );
     }
     setShowHolidayModal(false);
+  };
+
+  // Quick attendance form handler
+  const handleQuickAttendanceSubmit = (e) => {
+    e.preventDefault();
+    if (
+      quickAttendanceForm.employee &&
+      quickAttendanceForm.checkIn &&
+      quickAttendanceForm.checkOut
+    ) {
+      const newAttendance = {
+        id: Math.max(...attendanceRecords.map((att) => att.id)) + 1,
+        employee: quickAttendanceForm.employee,
+        date: new Date().toISOString().split("T")[0],
+        checkIn: quickAttendanceForm.checkIn,
+        checkOut: quickAttendanceForm.checkOut,
+        status: quickAttendanceForm.status,
+      };
+      setAttendanceRecords([...attendanceRecords, newAttendance]);
+      setQuickAttendanceForm({
+        employee: "",
+        checkIn: "",
+        checkOut: "",
+        status: "hadir",
+      });
+      alert("Kehadiran berhasil disimpan!");
+    } else {
+      alert("Mohon lengkapi semua field!");
+    }
   };
 
   // Delete handlers
@@ -486,97 +720,190 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 2. Stats Cards - Mobile */}
+          {/* 2. Quick Attendance Form - Mobile */}
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Input Kehadiran Cepat
+              </h3>
+              <button
+                onClick={() => openAttendanceModal("add")}
+                className="flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Tambah
+              </button>
+            </div>
+            <form onSubmit={handleQuickAttendanceSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Karyawan
+                </label>
+                <select
+                  value={quickAttendanceForm.employee}
+                  onChange={(e) =>
+                    setQuickAttendanceForm({
+                      ...quickAttendanceForm,
+                      employee: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                >
+                  <option value="">Pilih Karyawan</option>
+                  {employees.map((emp) => (
+                    <option key={emp.id} value={emp.name}>
+                      {emp.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Masuk
+                  </label>
+                  <input
+                    type="time"
+                    value={quickAttendanceForm.checkIn}
+                    onChange={(e) =>
+                      setQuickAttendanceForm({
+                        ...quickAttendanceForm,
+                        checkIn: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Keluar
+                  </label>
+                  <input
+                    type="time"
+                    value={quickAttendanceForm.checkOut}
+                    onChange={(e) =>
+                      setQuickAttendanceForm({
+                        ...quickAttendanceForm,
+                        checkOut: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <select
+                  value={quickAttendanceForm.status}
+                  onChange={(e) =>
+                    setQuickAttendanceForm({
+                      ...quickAttendanceForm,
+                      status: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                >
+                  <option value="hadir">Hadir</option>
+                  <option value="telat">Telat</option>
+                  <option value="tidak hadir">Tidak Hadir</option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+              >
+                Simpan Kehadiran
+              </button>
+            </form>
+          </div>
+
+          {/* 4. Department Distribution Chart - Mobile */}
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Distribusi Karyawan per Departemen
+              </h3>
+            </div>
+            
+            {/* Render visualisasi berdasarkan pilihan */}
+            {visualizationType === "pie" && <PieChartVisualization />}
+            {visualizationType === "donut" && <DonutChartVisualization />}
+            {visualizationType === "bar" && <BarChartVisualization />}
+            {visualizationType === "progress" && <ProgressBarsVisualization />}
+            {visualizationType === "cards" && <CardsVisualization />}
+            {visualizationType === "horizontal" && <HorizontalBarVisualization />}
+            
+            {/* Legend hanya untuk chart */}
+            {(visualizationType === "pie" || visualizationType === "donut" || visualizationType === "bar") && (
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {departmentData.map((item, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: item.color }}
+                    ></div>
+                    <span className="text-sm text-gray-600 truncate">
+                      {item.department}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900">
+                      ({item.count})
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* 3. Stats Cards - Mobile */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
                 <div
                   key={index}
-                  className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200"
+                  className="relative overflow-hidden bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  <div className="flex items-center justify-between">
+                  {/* Gradient background overlay */}
+                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${stat.bgGradient}`}></div>
+                  
+                  <div className="flex items-center justify-between relative z-10">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-600 truncate">
+                      <p className="text-sm font-medium text-gray-600 truncate mb-1">
                         {stat.title}
                       </p>
-                      <p className="text-xl sm:text-2xl font-bold text-gray-900">
+                      <p className={`text-xl sm:text-2xl font-bold ${stat.valueColor}`}>
                         {stat.value}
                       </p>
                     </div>
                     <div
-                      className={`p-2 sm:p-3 rounded-lg bg-${stat.color}-100 flex-shrink-0`}
+                      className={`p-3 sm:p-4 rounded-xl ${stat.iconBg} shadow-sm flex-shrink-0`}
                     >
                       <Icon
-                        className={`w-5 h-5 sm:w-6 sm:h-6 text-${stat.color}-600`}
+                        className={`w-6 h-6 sm:w-7 sm:h-7 ${stat.iconColor}`}
                       />
                     </div>
+                  </div>
+                  
+                  {/* Subtle pattern overlay */}
+                  <div className="absolute top-0 right-0 w-20 h-20 opacity-5">
+                    <Icon className="w-full h-full text-gray-400" />
                   </div>
                 </div>
               );
             })}
           </div>
-
-          {/* 3. Department Distribution Chart - Mobile */}
-          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Distribusi Karyawan per Departemen
-              </h3>
-              <div className="text-sm text-gray-500">Total: 156 karyawan</div>
-            </div>
-            <ResponsiveContainer
-              width="100%"
-              height={200}
-              className="sm:h-[250px]"
-            >
-              <PieChart>
-                <Pie
-                  data={departmentData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={30}
-                  outerRadius={60}
-                  paddingAngle={3}
-                  dataKey="count"
-                  stroke="#FFFFFF"
-                  strokeWidth={2}
-                >
-                  {departmentData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomDepartmentTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              {departmentData.map((item, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <div
-                    className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: item.color }}
-                  ></div>
-                  <span className="text-sm text-gray-600 truncate">
-                    {item.department}
-                  </span>
-                  <span className="text-sm font-medium text-gray-900">
-                    ({item.count})
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Desktop Layout: Original structure */}
+        {/* Desktop Layout: New structure */}
         <div className="hidden lg:block space-y-4 sm:space-y-6">
-          {/* Charts Section - Side by side on desktop */}
+          {/* First Row: Bar Chart + Attendance Form */}
           <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {/* Attendance Trend Chart */}
             <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Trend Kehadiran Mingguan
+                  Trend Absen
                 </h3>
                 <div className="text-sm text-gray-500">7 hari terakhir</div>
               </div>
@@ -632,86 +959,185 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+            {/* Quick Attendance Form */}
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Input Kehadiran Cepat
+                </h3>
+                <button
+                  onClick={() => openAttendanceModal("add")}
+                  className="flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Tambah
+                </button>
+              </div>
+              <form
+                onSubmit={handleQuickAttendanceSubmit}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Karyawan
+                  </label>
+                  <select
+                    value={quickAttendanceForm.employee}
+                    onChange={(e) =>
+                      setQuickAttendanceForm({
+                        ...quickAttendanceForm,
+                        employee: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  >
+                    <option value="">Pilih Karyawan</option>
+                    {employees.map((emp) => (
+                      <option key={emp.id} value={emp.name}>
+                        {emp.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Masuk
+                    </label>
+                    <input
+                      type="time"
+                      value={quickAttendanceForm.checkIn}
+                      onChange={(e) =>
+                        setQuickAttendanceForm({
+                          ...quickAttendanceForm,
+                          checkIn: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Keluar
+                    </label>
+                    <input
+                      type="time"
+                      value={quickAttendanceForm.checkOut}
+                      onChange={(e) =>
+                        setQuickAttendanceForm({
+                          ...quickAttendanceForm,
+                          checkOut: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    value={quickAttendanceForm.status}
+                    onChange={(e) =>
+                      setQuickAttendanceForm({
+                        ...quickAttendanceForm,
+                        status: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  >
+                    <option value="hadir">Hadir</option>
+                    <option value="telat">Telat</option>
+                    <option value="tidak hadir">Tidak Hadir</option>
+                  </select>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                >
+                  Simpan Kehadiran
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Second Row: Stats Cards + Pie Chart */}
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {/* Department Distribution Chart */}
             <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
                 <h3 className="text-lg font-semibold text-gray-900">
                   Distribusi Karyawan per Departemen
                 </h3>
-                <div className="text-sm text-gray-500">Total: 156 karyawan</div>
               </div>
-              <ResponsiveContainer
-                width="100%"
-                height={200}
-                className="sm:h-[250px]"
-              >
-                <PieChart>
-                  <Pie
-                    data={departmentData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={30}
-                    outerRadius={60}
-                    paddingAngle={3}
-                    dataKey="count"
-                    stroke="#FFFFFF"
-                    strokeWidth={2}
-                  >
-                    {departmentData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomDepartmentTooltip />} />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                {departmentData.map((item, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <div
-                      className="w-3 h-3 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: item.color }}
-                    ></div>
-                    <span className="text-sm text-gray-600 truncate">
-                      {item.department}
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      ({item.count})
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-4 gap-4">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-600 truncate">
-                        {stat.title}
-                      </p>
-                      <p className="text-xl sm:text-2xl font-bold text-gray-900">
-                        {stat.value}
-                      </p>
+              
+              {/* Render visualisasi berdasarkan pilihan */}
+              {visualizationType === "pie" && <PieChartVisualization />}
+              {visualizationType === "donut" && <DonutChartVisualization />}
+              {visualizationType === "bar" && <BarChartVisualization />}
+              {visualizationType === "progress" && <ProgressBarsVisualization />}
+              {visualizationType === "cards" && <CardsVisualization />}
+              {visualizationType === "horizontal" && <HorizontalBarVisualization />}
+              
+              {/* Legend hanya untuk chart */}
+              {(visualizationType === "pie" || visualizationType === "donut" || visualizationType === "bar") && (
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  {departmentData.map((item, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <div
+                        className="w-3 h-3 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: item.color }}
+                      ></div>
+                      <span className="text-sm text-gray-600 truncate">
+                        {item.department}
+                      </span>
+                      <span className="text-sm font-medium text-gray-900">
+                        ({item.count})
+                      </span>
                     </div>
-                    <div
-                      className={`p-2 sm:p-3 rounded-lg bg-${stat.color}-100 flex-shrink-0`}
-                    >
-                      <Icon
-                        className={`w-5 h-5 sm:w-6 sm:h-6 text-${stat.color}-600`}
-                      />
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              );
-            })}
+              )}
+            </div>
+            {/* Stats Cards - 2x2 Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {stats.map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={index}
+                    className="relative overflow-hidden bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    {/* Gradient background overlay */}
+                    <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${stat.bgGradient}`}></div>
+                    
+                    <div className="flex items-center justify-between relative z-10">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-gray-600 truncate mb-1">
+                          {stat.title}
+                        </p>
+                        <p className={`text-xl sm:text-2xl font-bold ${stat.valueColor}`}>
+                          {stat.value}
+                        </p>
+                      </div>
+                      <div
+                        className={`p-3 sm:p-4 rounded-xl ${stat.iconBg} shadow-sm flex-shrink-0`}
+                      >
+                        <Icon
+                          className={`w-6 h-6 sm:w-7 sm:h-7 ${stat.iconColor}`}
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Subtle pattern overlay */}
+                    <div className="absolute top-0 right-0 w-20 h-20 opacity-5">
+                      <Icon className="w-full h-full text-gray-400" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -826,11 +1252,13 @@ const AdminDashboard = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filteredEmployees.map((employee) => {
                       // Get today's attendance for this employee
-                      const today = new Date().toISOString().split('T')[0];
+                      const today = new Date().toISOString().split("T")[0];
                       const todayAttendance = attendanceRecords.find(
-                        record => record.employee === employee.name && record.date === today
+                        (record) =>
+                          record.employee === employee.name &&
+                          record.date === today
                       );
-                      
+
                       return (
                         <tr
                           key={employee.id}
@@ -866,7 +1294,8 @@ const AdminDashboard = () => {
                                   {todayAttendance.status}
                                 </span>
                                 <span className="text-xs text-gray-500">
-                                  {todayAttendance.checkIn} - {todayAttendance.checkOut}
+                                  {todayAttendance.checkIn} -{" "}
+                                  {todayAttendance.checkOut}
                                 </span>
                               </div>
                             ) : (
