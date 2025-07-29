@@ -210,18 +210,6 @@ const EmployeeDashboard = ({
               </p>
             </div>
           </div>
-
-          {/* Kanan: Waktu & Lokasi */}
-          <div className="bg-gray-50 sm:bg-transparent rounded-lg p-3 sm:p-0 text-center sm:text-right shadow-sm sm:shadow-none">
-            <p className="text-xs text-gray-500">Waktu Saat Ini</p>
-            <p className="text-lg sm:text-xl font-bold text-gray-900">
-              {currentStatus.currentTime}
-            </p>
-            <div className="flex justify-center sm:justify-end items-center gap-1 text-xs sm:text-sm text-gray-500 mt-1">
-              <MapPin className="w-4 h-4 flex-shrink-0 text-blue-500" />
-              <span className="truncate">{currentStatus.location}</span>
-            </div>
-          </div>
         </div>
       </div>
 
