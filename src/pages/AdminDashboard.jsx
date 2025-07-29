@@ -819,42 +819,7 @@ const AdminDashboard = () => {
             </form>
           </div>
 
-          {/* 4. Department Distribution Chart - Mobile */}
-          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Distribusi Karyawan per Departemen
-              </h3>
-            </div>
-            
-            {/* Render visualisasi berdasarkan pilihan */}
-            {visualizationType === "pie" && <PieChartVisualization />}
-            {visualizationType === "donut" && <DonutChartVisualization />}
-            {visualizationType === "bar" && <BarChartVisualization />}
-            {visualizationType === "progress" && <ProgressBarsVisualization />}
-            {visualizationType === "cards" && <CardsVisualization />}
-            {visualizationType === "horizontal" && <HorizontalBarVisualization />}
-            
-            {/* Legend hanya untuk chart */}
-            {(visualizationType === "pie" || visualizationType === "donut" || visualizationType === "bar") && (
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                {departmentData.map((item, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <div
-                      className="w-3 h-3 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: item.color }}
-                    ></div>
-                    <span className="text-sm text-gray-600 truncate">
-                      {item.department}
-                    </span>
-                    <span className="text-sm font-medium text-gray-900">
-                      ({item.count})
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+    
           {/* 3. Stats Cards - Mobile */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {stats.map((stat, index) => {
@@ -892,6 +857,43 @@ const AdminDashboard = () => {
                 </div>
               );
             })}
+          </div>
+
+                {/* 4. Department Distribution Chart - Mobile */}
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Distribusi Karyawan per Departemen
+              </h3>
+            </div>
+            
+            {/* Render visualisasi berdasarkan pilihan */}
+            {visualizationType === "pie" && <PieChartVisualization />}
+            {visualizationType === "donut" && <DonutChartVisualization />}
+            {visualizationType === "bar" && <BarChartVisualization />}
+            {visualizationType === "progress" && <ProgressBarsVisualization />}
+            {visualizationType === "cards" && <CardsVisualization />}
+            {visualizationType === "horizontal" && <HorizontalBarVisualization />}
+            
+            {/* Legend hanya untuk chart */}
+            {(visualizationType === "pie" || visualizationType === "donut" || visualizationType === "bar") && (
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {departmentData.map((item, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: item.color }}
+                    ></div>
+                    <span className="text-sm text-gray-600 truncate">
+                      {item.department}
+                    </span>
+                    <span className="text-sm font-medium text-gray-900">
+                      ({item.count})
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
