@@ -266,7 +266,7 @@ const ManagementDashboard = () => {
                     {stat.value}
                   </p>
                   <p
-                    className={`text-sm ${
+                    className={`text-2xl font-bold ${
                       stat.change.startsWith("+")
                         ? "text-green-600"
                         : "text-red-600"
