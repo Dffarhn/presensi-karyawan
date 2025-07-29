@@ -178,7 +178,7 @@ const ManagementDashboard = () => {
                     cy="50%"
                     outerRadius={60}
                     className="sm:outerRadius-[70px] lg:outerRadius-[80px]"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
                     labelLine={false}
                   >
                     {todayPie.map((entry, index) => (
