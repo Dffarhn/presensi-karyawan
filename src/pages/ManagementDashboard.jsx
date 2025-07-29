@@ -23,10 +23,10 @@ const ManagementDashboard = () => {
 
   // Data dummy
   const stats = [
-    { title: 'Total Karyawan', value: '156', change: '+2.5%', icon: Users, color: 'blue' },
     { title: 'Hadir Hari Ini', value: '142', change: '+1.2%', icon: CheckCircle, color: 'green' },
     { title: 'Tidak Hadir Hari Ini', value: '8', change: '-0.8%', icon: XCircle, color: 'red' },
-    { title: 'Terlambat Hari Ini', value: '6', change: '+0.3%', icon: Clock, color: 'yellow' }
+    { title: 'Terlambat Hari Ini', value: '6', change: '+0.3%', icon: Clock, color: 'yellow' },
+    { title: 'Total Karyawan', value: '156', change: '+2.5%', icon: Users, color: 'blue' },
   ]
 
   const attendanceTrend = [
@@ -91,51 +91,11 @@ const ManagementDashboard = () => {
             </button>
           </div>
         </div>
-
-        {/* Kartu Statistik */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon
-            return (
-              <div key={index} className="bg-white p-5 rounded-2xl shadow flex items-center gap-4 border border-gray-100">
-                <div className={`p-3 rounded-lg bg-${stat.color}-100`}>
-                  <Icon className={`w-7 h-7 text-${stat.color}-600`} />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                  <p className={`text-sm ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>{stat.change} dari kemarin</p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
+        
         {/* Bagian Grafik */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Grafik Garis */}
-          <div className="bg-white p-6 rounded-2xl shadow border border-gray-100 col-span-2 flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Tren Kehadiran Bulanan</h3>
-              <TrendingUp className="w-5 h-5 text-gray-400" />
-            </div>
-            <div className="flex-1 min-h-[220px]">
-              <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={attendanceTrend} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="present" stroke="#22c55e" name="Hadir" strokeWidth={3} />
-                  <Line type="monotone" dataKey="absent" stroke="#ef4444" name="Tidak Hadir" strokeWidth={3} />
-                  <Line type="monotone" dataKey="late" stroke="#eab308" name="Terlambat" strokeWidth={3} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          {/* Grafik Pie */}
-          <div className="bg-white p-6 rounded-2xl shadow border border-gray-100 flex flex-col items-center justify-center">
+                 {/* Grafik Pie */}
+                 <div className="bg-white p-6 rounded-2xl shadow border border-gray-100 flex flex-col items-center justify-center">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Komposisi Kehadiran Hari Ini</h3>
             <div className="w-full flex-1 min-h-[180px]">
               <ResponsiveContainer width="100%" height={180}>
@@ -159,7 +119,48 @@ const ManagementDashboard = () => {
               </ResponsiveContainer>
             </div>
           </div>
+          {/* Grafik Garis */}
+          <div className="bg-white p-6 rounded-2xl shadow border border-gray-100 col-span-2 flex flex-col">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Tren Ketidakhadiran Bulanan</h3>
+              <TrendingUp className="w-5 h-5 text-gray-400" />
+            </div>
+            <div className="flex-1 min-h-[220px]">
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={attendanceTrend} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="absent" stroke="#ef4444" name="Tidak Hadir" strokeWidth={3} />
+                  <Line type="monotone" dataKey="late" stroke="#eab308" name="Terlambat" strokeWidth={3} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+   
         </div>
+
+        {/* Kartu Statistik */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon
+            return (
+              <div key={index} className="bg-white p-5 rounded-2xl shadow flex items-center gap-4 border border-gray-100">
+                <div className={`p-3 rounded-lg bg-${stat.color}-100`}>
+                  <Icon className={`w-7 h-7 text-${stat.color}-600`} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className={`text-sm ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>{stat.change} dari kemarin</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
 
         {/* Perbandingan Departemen & Peringatan */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -212,7 +213,7 @@ const ManagementDashboard = () => {
         </div>
 
         {/* Wawasan Kinerja dan Penghargaan */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-8">
           {/* Karyawan Terbaik */}
           <div className="bg-white p-6 rounded-2xl shadow border border-gray-100">
             <div className="flex items-center justify-between mb-4">
@@ -232,28 +233,6 @@ const ManagementDashboard = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-          {/* Aksi Cepat */}
-          <div className="bg-white p-6 rounded-2xl shadow border border-gray-100 flex flex-col justify-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Aksi Cepat</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                <FileText className="w-6 h-6 text-blue-600 mb-2" />
-                <span className="text-sm font-medium">Laporan Harian</span>
-              </button>
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                <Calendar className="w-6 h-6 text-green-600 mb-2" />
-                <span className="text-sm font-medium">Ringkasan Bulanan</span>
-              </button>
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                <TrendingUp className="w-6 h-6 text-purple-600 mb-2" />
-                <span className="text-sm font-medium">Analisis Tren</span>
-              </button>
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                <Eye className="w-6 h-6 text-orange-600 mb-2" />
-                <span className="text-sm font-medium">Laporan Pengecualian</span>
-              </button>
             </div>
           </div>
         </div>
